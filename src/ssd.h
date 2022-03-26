@@ -474,8 +474,19 @@ public:
 	~Garbage_collector(void);
 	enum status collect(Event &event, enum GC_POLICY policy);
   
-  bool clean(unsigned long data_pba, unsigned long log_pba);
+  //bool clean(unsigned long data_pba, unsigned long log_pba);
+  bool clean(unsigned long logical_block, unsigned long data_pba, unsigned long log_pba);
   unsigned long next_log_block_to_clean(enum GC_POLICY policy);
+  bool shuffle_data_log(void);
+  bool next_unmapped_log_block(unsigned long *log_address,
+                                  unsigned int *package, unsigned int *die, 
+                                  unsigned int *plane, unsigned int *block);
+  unsigned long remap_data_block(unsigned long logical_block,
+                                                  unsigned long old_data_pba,
+                                                  unsigned long log_pba);
+  unsigned long remap_log_block(unsigned long logical_block,
+                                                 unsigned long data_pba,
+                                                 unsigned long old_log_pba);
 
   FILE *log_file;
   Ftl &ftl;
@@ -513,6 +524,7 @@ public:
 	Controller &controller;
 	Garbage_collector garbage;
 	Wear_leveler wear;
+    void print_info(void);
 // new functions
   	bool fetch_log_page(std::string offsets, unsigned int data_page, unsigned int *log_page);
   	bool next_free_log_page(std::string offsets, unsigned int *page);
