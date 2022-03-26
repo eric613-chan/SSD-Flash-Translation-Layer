@@ -226,7 +226,7 @@ void Ftl::print_info(void) {
     fprintf(log_file, "%d data blocks have %u erases\n", sum, i);
   }
   fprintf(log_file, "total # of op blocks %d\n", (int)NUM_OF_OP_B);
-  fprintf(log_file, "free op blocks left %d\n", op_blocks.size());
+  fprintf(log_file, "free op blocks left %ld\n", op_blocks.size());
   int big_sum = 0;
   for (unsigned int i = 0; i <= BLOCK_ERASES; i++) {
     int sum = 0;
@@ -452,6 +452,7 @@ bool Garbage_collector::next_unmapped_log_block(unsigned long *log_address,
  * @brief Find the cleaning block to use
  */
 bool next_unmapped_cln_block(unsigned long *cln_address) {
+    (void*)cln_address;
   return false;
   /*
   if (over_erase_limit(current_cln_address)) {
@@ -582,8 +583,7 @@ unsigned long Garbage_collector::remap_log_block(unsigned long logical_block,
 /**
  * @brief Move data to cleaning black and move back
  */
-bool Garbage_collector::clean(unsigned long logical_block,
-                              unsigned long data_pba, unsigned long log_pba) {
+bool Garbage_collector::clean(unsigned long logical_block, unsigned long data_pba, unsigned long log_pba) {
   unsigned int package;
   unsigned int die;
   unsigned int plane;
